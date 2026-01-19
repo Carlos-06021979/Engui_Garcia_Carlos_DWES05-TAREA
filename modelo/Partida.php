@@ -263,55 +263,86 @@ class Partida
 
       $casilla = $casillasRecorridas[$i]; // Casilla intermedia
 
+      // Si hay una pieza en esa casilla
       if ($this->obtenerPiezaEnPosicion($casilla) !== null) {
-        $hayPiezasIntermedias = true;
-        break;
+
+        $hayPiezasIntermedias = true; // Asignamos true a $hayPiezasIntermedias
+
+        break; // Salimos del bucle
       }
     }
+
     // El caballo puede saltar, los demás no
+    // Si hay piezas intermedias y no es caballo
     if ($hayPiezasIntermedias && !($piezaOrigen instanceof Caballo)) {
-      $this->mensaje = "Hay piezas bloqueando el camino";
-      return false;
+
+      $this->mensaje = "Hay piezas bloqueando el camino"; // Actualizamos el mensaje
+
+      return false; // Retornamos false
     }
 
     // Evitar movimientos que dejen al propio rey en jaque
     // Simulamos el movimiento en una copia clonada de $this->jugadores
     $backup = serialize($this->jugadores);
+
+    // Creamos un estado temporal clonando jugadores
     $tempJugadores = unserialize($backup);
 
     // Obtener las piezas dentro del estado temporal
     $piezaOrigenTemp = $tempJugadores[$this->turno]->getPiezaEnPosicion($origen);
     $piezaDestinoTemp = $this->obtenerPiezaEnPosicion($destino, $tempJugadores);
 
+    // Si es captura al paso
     if ($esEnPassant) {
-      // Captura al paso: capturar la pieza en posCapturaEnPassant
-      $piezaAlPasoTemp = $this->obtenerPiezaEnPosicion($posCapturaEnPassant, $tempJugadores);
-      if ($piezaAlPasoTemp && $piezaAlPasoTemp instanceof Peon) {
-        $piezaAlPasoTemp->capturar();
-      }
-    } elseif ($piezaDestinoTemp) {
-      $piezaDestinoTemp->capturar();
-    }
 
+      // Capturar pieza al paso en estado temporal
+      $piezaAlPasoTemp = $this->obtenerPiezaEnPosicion($posCapturaEnPassant, $tempJugadores);
+
+      // Si la pieza al paso existe, la capturamos
+      if ($piezaAlPasoTemp && $piezaAlPasoTemp instanceof Peon) $piezaAlPasoTemp->capturar();
+
+      // Si no es captura al paso pero hay pieza en destino
+      elseif ($piezaDestinoTemp) $piezaDestinoTemp->capturar();
+
+      // Si no es captura al paso y hay pieza en destino, la capturamos
+    } elseif ($piezaDestinoTemp) $piezaDestinoTemp->capturar();
+
+    // Si no es enroque, movemos la pieza origen al destino en estado temporal
     if ($piezaOrigenTemp && !$esEnroque) {
-      $piezaOrigenTemp->setPosicion($destino);
-      $piezaOrigenTemp->setHaMovido();
-      if ($piezaOrigenTemp instanceof Peon) {
-        $piezaOrigenTemp->setEsPrimerMovimiento(false);
-      }
+
+      $piezaOrigenTemp->setPosicion($destino); // Movemos la pieza en estado temporal
+
+      $piezaOrigenTemp->setHaMovido(); // Marcamos que ha movido
+
+      // Si es peón, marcamos que no es su primer movimiento
+      if ($piezaOrigenTemp instanceof Peon) $piezaOrigenTemp->setEsPrimerMovimiento(false);
     }
 
     // Simular enroque moviendo rey y torre en temp si aplica
+    // Si es enroque
     if ($esEnroque) {
-      $color = $this->turno;
-      $filaInicial = ($color === 'blancas') ? 1 : 8;
-      $posReyOrigen = ($color === 'blancas') ? 'E1' : 'E8';
+
+      $color = $this->turno; // Color del jugador
+
+      $filaInicial = ($color === 'blancas') ? 1 : 8; // Fila inicial según color
+
+      $posReyOrigen = ($color === 'blancas') ? 'E1' : 'E8'; // Posición inicial del rey
+
+      // Posiciones según tipo de enroque
       $posReyDestino = ($color === 'blancas') ? (($tipoEnroque === 'corto') ? 'G1' : 'C1') : (($tipoEnroque === 'corto') ? 'G8' : 'C8');
+
+      // Posiciones de la torre
       $posTorreOrigen = ($color === 'blancas') ? (($tipoEnroque === 'corto') ? 'H1' : 'A1') : (($tipoEnroque === 'corto') ? 'H8' : 'A8');
+
+      // Posición destino de la torre
       $posTorreDestino = ($color === 'blancas') ? (($tipoEnroque === 'corto') ? 'F1' : 'D1') : (($tipoEnroque === 'corto') ? 'F8' : 'D8');
 
-      $reyTemp = $tempJugadores[$color]->getRey();
+      $reyTemp = $tempJugadores[$color]->getPiezaEnPosicion($posReyOrigen); // Obtenemos el rey temporal usando su posición
+
+      // Obtenemos la torre temporal
       $torreTemp = $tempJugadores[$color]->getPiezaEnPosicion($posTorreOrigen);
+
+      // Si no se encuentran rey o torre
       if (!$reyTemp || !$torreTemp) {
         $this->mensaje = 'Enroque no válido';
         return false;
