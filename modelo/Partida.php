@@ -344,38 +344,59 @@ class Partida
 
       // Si no se encuentran rey o torre
       if (!$reyTemp || !$torreTemp) {
-        $this->mensaje = 'Enroque no válido';
-        return false;
+
+        $this->mensaje = 'Enroque no válido'; // Actualizamos el mensaje
+
+        return false; // Retornamos false
       }
-      $reyTemp->setPosicion($posReyDestino);
-      $torreTemp->setPosicion($posTorreDestino);
+
+      $reyTemp->setPosicion($posReyDestino); // Movemos el rey en estado temporal
+
+      $torreTemp->setPosicion($posTorreDestino); // Movemos la torre en estado temporal
     }
 
-    $miColor = $this->turno;
-    $quedaEnJaque = $this->estaEnJaque($miColor, $tempJugadores);
+    $miColor = $this->turno; // Color del jugador que mueve
 
+    $quedaEnJaque = $this->estaEnJaque($miColor, $tempJugadores); // Verificamos si queda en jaque
+
+    // Si queda en jaque
     if ($quedaEnJaque) {
-      $this->mensaje = "Movimiento inválido: deja en jaque a tu rey";
-      return false;
+
+      $this->mensaje = "Movimiento inválido: deja en jaque a tu rey"; // Actualizamos el mensaje
+
+      return false; // Retornamos false
     }
 
-    // 5. Verificar la casilla de destino
+    // 5. Verificar la casilla de destino:
+    // Si no es captura al paso ni enroque
     if (!$esEnroque && !$esEnPassant && $piezaDestino !== null) {
-      // Hay una pieza en el destino
+
+      // Si la pieza destino es del mismo color
       if ($piezaDestino->getColor() === $this->turno) {
-        // Es una pieza propia, no se puede mover ahí
+
+        // No se puede capturar a tus propias piezas
         $this->mensaje = "No puedes capturar tus propias piezas";
-        return false;
+
+        return false; // Retornamos false
+
+
+        // Si es de color contrario
       } else {
-        // Es una pieza enemiga, se captura
-        $piezaDestino->capturar();
+
+        $piezaDestino->capturar(); // Capturamos la pieza destino
 
         // Verificar si era el rey (fin de partida)
         if ($piezaDestino instanceof Rey) {
-          $this->partidaTerminada = true;
+
+          $this->partidaTerminada = true; // Asignamos true a partidaTerminada
+
+          // El ganador es el jugador que movió
           $nombreGanador = $this->jugadores[$this->turno]->getNombre();
+
+          // Actualizamos el mensaje de victoria
           $this->mensaje = "¡Jaque mate! " . $nombreGanador . " ha ganado la partida";
-          return true;
+
+          return true; // Retornamos true
         }
       }
     }
