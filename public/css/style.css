@@ -1,0 +1,38 @@
+/* ========================================
+   ESTILOS GENERALES
+   Importados de: base.css, layout.css, botones.css, inicio.css
+   ======================================== */
+
+
+/* Mensaje de estado */
+.mensaje {
+  background: #e3f2fd;
+  border-left: 4px solid #2196F3;
+  border-right: 4px solid #2196F3;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+.mensaje.terminada {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  border-right: 4px solid #ffc107;
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+.mensaje.pausa {
+  background: linear-gradient(135deg, #ff9500 0%, #ff6f00 100%);
+  border-left: 4px solid #ff6f00;
+  border-right: 4px solid #ff6f00;
+  color: white;
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+/* ========================================
+   RESPONSIVE GENERAL
+   ======================================== */
