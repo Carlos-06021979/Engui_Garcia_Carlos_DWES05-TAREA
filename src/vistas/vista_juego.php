@@ -70,7 +70,7 @@ function mostrarRelojes($jugadores, $marcador)
       </div>
       <!-- Tiempo restante del jugador blanco - Se resalta en rojo si le quedan menos de 60 segundos -->
       <div id="tiempo-blancas" class="reloj-tiempo <?php echo (isset($_SESSION['config']['sin_tiempo']) && $_SESSION['config']['sin_tiempo']) ? '' : ($_SESSION['tiempo_blancas'] < 60 ? 'tiempo-critico' : ''); ?>">
-        <?php 
+        <?php
         // Si es sin tiempo mostramos un símbolo especial
         if (isset($_SESSION['config']['sin_tiempo']) && $_SESSION['config']['sin_tiempo']) {
           echo '♾️';
@@ -103,7 +103,7 @@ function mostrarRelojes($jugadores, $marcador)
       </div>
       <!-- Tiempo restante del jugador negro - Se resalta en rojo si le quedan menos de 60 segundos -->
       <div id="tiempo-negras" class="reloj-tiempo <?php echo (isset($_SESSION['config']['sin_tiempo']) && $_SESSION['config']['sin_tiempo']) ? '' : ($_SESSION['tiempo_negras'] < 60 ? 'tiempo-critico' : ''); ?>">
-        <?php 
+        <?php
         // Si es sin tiempo mostramos un símbolo especial
         if (isset($_SESSION['config']['sin_tiempo']) && $_SESSION['config']['sin_tiempo']) {
           echo '♾️';

@@ -339,7 +339,10 @@ function sincronizarConServidor() {
         actualizarDisplayRelojes();
 
         // Si el tiempo se agotó desde el servidor, detenemos el intervalo (solo si no es sin tiempo)
-        if (!sinTiempoLocal && (data.tiempo_blancas <= 0 || data.tiempo_negras <= 0)) {
+        if (
+          !sinTiempoLocal &&
+          (data.tiempo_blancas <= 0 || data.tiempo_negras <= 0)
+        ) {
           if (intervaloRelojes !== null) {
             clearInterval(intervaloRelojes);
             intervaloRelojes = null;
