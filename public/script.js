@@ -653,8 +653,13 @@ function cerrarModal(modalId) {
   // Obtenemos el modal por su ID
   const modal = document.getElementById(modalId);
   if (modal) {
-    // Lo ocultamos cambiando su display a none
-    modal.style.display = "none";
+    // Si es el modal de cargar inicial, eliminamos la clase mostrar
+    if (modalId === "modalCargarInicial") {
+      modal.classList.remove("mostrar");
+    } else {
+      // Para otros modales, ocultamos cambiando su display a none
+      modal.style.display = "none";
+    }
   }
 }
 
@@ -766,8 +771,8 @@ function abrirModalCargarInicial() {
   // Obtenemos el modal
   const modal = document.getElementById("modalCargarInicial");
   if (modal) {
-    // Lo mostramos
-    modal.style.display = "flex";
+    // Lo mostramos añadiendo la clase mostrar
+    modal.classList.add("mostrar");
   }
 }
 
