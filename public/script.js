@@ -131,7 +131,8 @@ if (formConfig && btnGuardarConfig && chkCoords && chkCapturas) {
     const cambiado =
       chkCoords.checked !== estadoInicial.coords ||
       chkCapturas.checked !== estadoInicial.capturas ||
-      (selectMovimientos && selectMovimientos.value !== estadoInicial.movimientos);
+      (selectMovimientos &&
+        selectMovimientos.value !== estadoInicial.movimientos);
     // Si nada cambió, deshabilitamos el botón
     btnGuardarConfig.disabled = !cambiado;
     btnGuardarConfig.classList.toggle("btn-disabled", !cambiado);

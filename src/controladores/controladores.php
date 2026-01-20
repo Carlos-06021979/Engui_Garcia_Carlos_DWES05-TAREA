@@ -860,24 +860,24 @@ function deshacerJugada($partida)
 {
   // Obtener el máximo de movimientos permitidos a deshacer
   $maxMovimientos = isset($_SESSION['config']['max_movimientos_deshacer']) ? $_SESSION['config']['max_movimientos_deshacer'] : 5;
-  
+
   // Si el máximo es 0, no permitimos deshacer
   if ($maxMovimientos == 0) {
     $partida->setMensaje("No está permitido deshacer movimientos en esta partida");
     return;
   }
-  
+
   // Contar cuántos movimientos se han deshecho usando una variable de sesión
   if (!isset($_SESSION['movimientos_deshechados'])) {
     $_SESSION['movimientos_deshechados'] = 0;
   }
-  
+
   // Si ya hemos llegado al máximo, no permitimos más
   if ($_SESSION['movimientos_deshechados'] >= $maxMovimientos) {
     $partida->setMensaje("Has alcanzado el límite de movimientos a deshacer (" . $maxMovimientos . ")");
     return;
   }
-  
+
   $partida->deshacerJugada(); // Deshacemos la última jugada
   $_SESSION['movimientos_deshechados']++; // Incrementar contador
   $_SESSION['casilla_seleccionada'] = null; // Limpiamos la casilla seleccionada
