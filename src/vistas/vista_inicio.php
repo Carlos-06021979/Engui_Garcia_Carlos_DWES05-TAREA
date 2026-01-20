@@ -285,7 +285,7 @@ function mostrarFormularioConfig($partidasGuardadas = [])
 // Para mostrar modal para cargar una partida guardada desde la pantalla de inicio
 function mostrarModalCargarInicial($partidas)
 {
-  ?>
+?>
   <!-- Overlay que cubre toda la pantalla y modal centrado -->
   <div id="modalCargarInicial" class="modal-overlay">
     <div class="modal-content modal-lista">
