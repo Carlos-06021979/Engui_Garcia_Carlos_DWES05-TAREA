@@ -67,10 +67,8 @@ $partidasGuardadasInicio = $estado['partidasGuardadasInicio'];
     <!-- ...mostramos la pantalla principal -->
     <?php mostrarPantallaPrincipal($partidasGuardadasInicio); ?>
 
-    <!-- Modal para cargar una partida desde la pantalla principal -->
-    <?php if (!empty($partidasGuardadasInicio)): ?>
-      <?php mostrarModalCargarInicial($partidasGuardadasInicio); ?>
-    <?php endif; ?>
+    <!-- Modal para cargar una partida desde la pantalla principal (oculto por defecto) -->
+    <?php mostrarModalCargarInicial($partidasGuardadasInicio); ?>
     <!-- Si ya se han puesto nombres a los jugadores... -->
   <?php elseif (isset($_SESSION['nombres_configurados'])): ?>
     <!-- ...mostramos el tablero y la partida -->
@@ -148,10 +146,8 @@ $partidasGuardadasInicio = $estado['partidasGuardadasInicio'];
     <!-- ...mostramos el formulario de configuración -->
     <?php mostrarFormularioConfig($partidasGuardadasInicio); ?>
 
-    <!-- Modal para cargar una partida anterior desde la pantalla de configuración -->
-    <?php if (!empty($partidasGuardadasInicio)): ?>
-      <?php mostrarModalCargarInicial($partidasGuardadasInicio); ?>
-    <?php endif; ?>
+    <!-- Modal para cargar una partida anterior desde la pantalla de configuración (oculto por defecto) -->
+    <?php mostrarModalCargarInicial($partidasGuardadasInicio); ?>
   <?php endif; ?>
 </body>
 

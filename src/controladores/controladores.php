@@ -224,10 +224,8 @@ function resolverAcciones()
     $_SESSION['pantalla_principal_mostrada'] = true;
   }
 
-  // Si se pidió cargar desde pantalla principal, marcamos que se mostró
-  if (isset($_POST['abrir_modal_cargar_inicial'])) {
-    $_SESSION['pantalla_principal_mostrada'] = true;
-  }
+  // Si se pidió iniciar una nueva partida, creamos una nueva partida
+  if (isset($_POST['iniciar_partida'])) iniciarPartida();
 
   // Si se pidió salir de la configuración, volvemos a la pantalla principal
   if (isset($_POST['salir_configuracion'])) {
@@ -235,9 +233,6 @@ function resolverAcciones()
     header('Location: index.php');
     exit();
   }
-
-  // Si se pidió iniciar una nueva partida, creamos una nueva partida
-  if (isset($_POST['iniciar_partida'])) iniciarPartida();
 
   // Cargar/eliminar desde pantalla inicial
   // Si se pidió cargar una partida desde la pantalla inicial

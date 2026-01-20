@@ -26,13 +26,11 @@ function mostrarPantallaPrincipal($partidasGuardadas = [])
     <!-- Botones de acción superpuestos -->
     <div class="botones-arcade">
       <!-- Botón para cargar partida guardada (habilitado solo si hay) -->
-      <form method="post" style="display: inline;">
-        <button type="submit" name="abrir_modal_cargar_inicial"
-          class="btn-arcade btn-cargar-arcade"
-          <?php echo empty($partidasGuardadas) ? 'disabled' : ''; ?>>
-          📁 Cargar Partida
-        </button>
-      </form>
+      <button type="button" class="btn-arcade btn-cargar-arcade"
+        onclick="abrirModalCargarInicial()"
+        <?php echo empty($partidasGuardadas) ? 'disabled' : ''; ?>>
+        📁 Cargar Partida
+      </button>
 
       <!-- Botón para crear nueva partida -->
       <form method="post" style="display: inline;">
