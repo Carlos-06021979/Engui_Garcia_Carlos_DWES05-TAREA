@@ -37,8 +37,8 @@ function procesarAjaxActualizarRelojes()
   // Solo restamos tiempo si la partida no está pausada y no se acabó el tiempo
   if (!isset($_SESSION['pausa']) || !$_SESSION['pausa']) {
 
-    // Si el tiempo no se agotó, seguimos contando
-    if (!isset($_SESSION['partida_terminada_por_tiempo'])) {
+    // Si el tiempo no se agotó y no es una partida sin tiempo, seguimos contando
+    if (!isset($_SESSION['partida_terminada_por_tiempo']) && !(isset($_SESSION['config']['sin_tiempo']) && $_SESSION['config']['sin_tiempo'])) {
 
       // Si ya tuvimos un registro anterior, calculamos el tiempo que ha pasado desde entonces
       if (isset($_SESSION['ultimo_tick'])) {
@@ -70,11 +70,14 @@ function procesarAjaxActualizarRelojes()
         // En la primera ejecución, solo registramos la hora
         $_SESSION['ultimo_tick'] = $ahora;
       }
+    } else if (isset($_SESSION['config']['sin_tiempo']) && $_SESSION['config']['sin_tiempo']) {
+      // Si es sin tiempo, solo actualizamos el último tick para mantener sincronización
+      $_SESSION['ultimo_tick'] = $ahora;
     }
   }
 
-  // Verificamos si algún jugador se quedó sin tiempo (solo una vez)
-  if (!isset($_SESSION['partida_terminada_por_tiempo'])) {
+  // Verificamos si algún jugador se quedó sin tiempo (solo una vez) - pero solo si no es sin tiempo
+  if (!isset($_SESSION['partida_terminada_por_tiempo']) && !(isset($_SESSION['config']['sin_tiempo']) && $_SESSION['config']['sin_tiempo'])) {
 
     // Si las blancas se acabaron el tiempo, ganan las negras
     if ($_SESSION['tiempo_blancas'] <= 0) {
@@ -111,7 +114,8 @@ function procesarAjaxActualizarRelojes()
     'reloj_activo' => $_SESSION['reloj_activo'],
     'pausa' => isset($_SESSION['pausa']) ? $_SESSION['pausa'] : false,
     'sin_partida' => false,
-    'partida_terminada' => $partidaTerminada
+    'partida_terminada' => $partidaTerminada,
+    'sin_tiempo' => (isset($_SESSION['config']['sin_tiempo']) && $_SESSION['config']['sin_tiempo']) ? true : false
   ]);
   // Guarda los cambios de sesión y cierra la conexión
   session_write_close();
@@ -129,7 +133,8 @@ function aplicarConfigPredeterminada()
     "tiempo_inicial" => 600, // 10 minutos
     "incremento" => 0, // Sin incremento
     "mostrar_coordenadas" => true, // Mostramos coordenadas del tablero
-    "mostrar_capturas" => true // Mostramos piezas capturadas
+    "mostrar_capturas" => true, // Mostramos piezas capturadas
+    "sin_tiempo" => false // Por defecto sí hay tiempo
   ];
 
   // Si la configuración no existe en la session, la creamos con los valores por defecto ($configDefecto )
@@ -534,7 +539,9 @@ function iniciarPartida()
 
     'mostrar_coordenadas' => isset($_POST['mostrar_coordenadas']), // Mostrar letras y números
 
-    'mostrar_capturas' => isset($_POST['mostrar_capturas']) // Mostrar piezas capturadas
+    'mostrar_capturas' => isset($_POST['mostrar_capturas']), // Mostrar piezas capturadas
+
+    'sin_tiempo' => ((int)$_POST['tiempo_inicial'] === 0) // Flag para partida sin tiempo
   ];
 
   // Creamos una nueva partida con los nombres de los jugadores

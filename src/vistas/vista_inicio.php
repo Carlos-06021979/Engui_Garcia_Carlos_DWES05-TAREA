@@ -229,6 +229,7 @@ function mostrarFormularioConfig($partidasGuardadas = [])
           <div class="config-option">
             <label>Tiempo inicial por jugador:</label>
             <select name="tiempo_inicial" class="select-tiempo">
+              <option value="0">♾️ Sin tiempo (Partida sin límite)</option>
               <option value="60">1 minuto (Bullet)</option>
               <option value="180">3 minutos (Blitz)</option>
               <option value="300">5 minutos (Blitz)</option>

@@ -69,8 +69,15 @@ function mostrarRelojes($jugadores, $marcador)
         <?php echo $jugadores['blancas']->getNombre(); ?>
       </div>
       <!-- Tiempo restante del jugador blanco - Se resalta en rojo si le quedan menos de 60 segundos -->
-      <div id="tiempo-blancas" class="reloj-tiempo <?php echo $_SESSION['tiempo_blancas'] < 60 ? 'tiempo-critico' : ''; ?>">
-        <?php echo formatearTiempo($_SESSION['tiempo_blancas']); ?>
+      <div id="tiempo-blancas" class="reloj-tiempo <?php echo (isset($_SESSION['config']['sin_tiempo']) && $_SESSION['config']['sin_tiempo']) ? '' : ($_SESSION['tiempo_blancas'] < 60 ? 'tiempo-critico' : ''); ?>">
+        <?php 
+        // Si es sin tiempo mostramos un símbolo especial
+        if (isset($_SESSION['config']['sin_tiempo']) && $_SESSION['config']['sin_tiempo']) {
+          echo '♾️';
+        } else {
+          echo formatearTiempo($_SESSION['tiempo_blancas']);
+        }
+        ?>
       </div>
       <!-- Puntuación del jugador blanco en esta partida -->
       <div class="reloj-puntos"><?php echo $marcador[0]; ?> pts</div>
@@ -95,8 +102,15 @@ function mostrarRelojes($jugadores, $marcador)
         <?php echo $jugadores['negras']->getNombre(); ?>
       </div>
       <!-- Tiempo restante del jugador negro - Se resalta en rojo si le quedan menos de 60 segundos -->
-      <div id="tiempo-negras" class="reloj-tiempo <?php echo $_SESSION['tiempo_negras'] < 60 ? 'tiempo-critico' : ''; ?>">
-        <?php echo formatearTiempo($_SESSION['tiempo_negras']); ?>
+      <div id="tiempo-negras" class="reloj-tiempo <?php echo (isset($_SESSION['config']['sin_tiempo']) && $_SESSION['config']['sin_tiempo']) ? '' : ($_SESSION['tiempo_negras'] < 60 ? 'tiempo-critico' : ''); ?>">
+        <?php 
+        // Si es sin tiempo mostramos un símbolo especial
+        if (isset($_SESSION['config']['sin_tiempo']) && $_SESSION['config']['sin_tiempo']) {
+          echo '♾️';
+        } else {
+          echo formatearTiempo($_SESSION['tiempo_negras']);
+        }
+        ?>
       </div>
       <!-- Puntuación del jugador negro en esta partida -->
       <div class="reloj-puntos"><?php echo $marcador[1]; ?> pts</div>

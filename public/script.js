@@ -177,6 +177,7 @@ let relojActivoLocal = "blancas"; // Quién está jugando ahora
 let pausaLocal = false; // Si la partida está en pausa
 let contadorSincronizacion = 0; // Contador para sincronizar cada 5 segundos
 let recargandoPagina = false; // Flag para evitar múltiples recargas cuando se agota el tiempo
+let sinTiempoLocal = false; // Flag para indicar si es una partida sin tiempo
 
 // Función para formatear segundos a MM:SS
 function formatearTiempo(segundos) {
@@ -196,21 +197,29 @@ function actualizarDisplayRelojes() {
   // Si los elementos no existen, salimos
   if (!tb || !tn) return;
 
-  // Mostramos los tiempos formateados
-  tb.textContent = formatearTiempo(tiempoLocalBlancas);
-  tn.textContent = formatearTiempo(tiempoLocalNegras);
+  // Mostramos los tiempos formateados o el símbolo de infinito si es sin tiempo
+  if (sinTiempoLocal) {
+    tb.textContent = "♾️";
+    tn.textContent = "♾️";
+  } else {
+    tb.textContent = formatearTiempo(tiempoLocalBlancas);
+    tn.textContent = formatearTiempo(tiempoLocalNegras);
+  }
 
   // Resaltamos en rojo SOLO el reloj del jugador que está jugando si le quedan menos de 60 segundos
-  if (relojActivoLocal === "blancas") {
-    tiempoLocalBlancas < 60
-      ? tb.classList.add("tiempo-critico")
-      : tb.classList.remove("tiempo-critico");
-    tn.classList.remove("tiempo-critico");
-  } else {
-    tiempoLocalNegras < 60
-      ? tn.classList.add("tiempo-critico")
-      : tn.classList.remove("tiempo-critico");
-    tb.classList.remove("tiempo-critico");
+  // (pero solo si no es sin tiempo)
+  if (!sinTiempoLocal) {
+    if (relojActivoLocal === "blancas") {
+      tiempoLocalBlancas < 60
+        ? tb.classList.add("tiempo-critico")
+        : tb.classList.remove("tiempo-critico");
+      tn.classList.remove("tiempo-critico");
+    } else {
+      tiempoLocalNegras < 60
+        ? tn.classList.add("tiempo-critico")
+        : tn.classList.remove("tiempo-critico");
+      tb.classList.remove("tiempo-critico");
+    }
   }
 
   // Actualizamos los estilos de reloj activo/inactivo en todos los relojes
@@ -247,14 +256,14 @@ function actualizarTiempoLocal() {
   }
 
   // Si no está en pausa, decrementamos el reloj del jugador actual
-  if (!pausaLocal) {
+  if (!pausaLocal && !sinTiempoLocal) {
     if (relojActivoLocal === "blancas" && tiempoLocalBlancas > 0) {
       tiempoLocalBlancas--;
     } else if (relojActivoLocal === "negras" && tiempoLocalNegras > 0) {
       tiempoLocalNegras--;
     }
 
-    // Si se agotó el tiempo, recargamos la página SOLO UNA VEZ
+    // Si se agotó el tiempo, recargamos la página SOLO UNA VEZ (pero solo si no es sin tiempo)
     if (
       (tiempoLocalBlancas <= 0 || tiempoLocalNegras <= 0) &&
       !recargandoPagina
@@ -317,6 +326,7 @@ function sincronizarConServidor() {
         tiempoLocalNegras = data.tiempo_negras;
         relojActivoLocal = data.reloj_activo;
         pausaLocal = data.pausa || false;
+        sinTiempoLocal = data.sin_tiempo || false;
 
         // Log para debugging si la partida está en pausa
         if (data.pausa) {
@@ -328,8 +338,8 @@ function sincronizarConServidor() {
         // Actualizamos la pantalla
         actualizarDisplayRelojes();
 
-        // Si el tiempo se agotó desde el servidor, detenemos el intervalo
-        if (data.tiempo_blancas <= 0 || data.tiempo_negras <= 0) {
+        // Si el tiempo se agotó desde el servidor, detenemos el intervalo (solo si no es sin tiempo)
+        if (!sinTiempoLocal && (data.tiempo_blancas <= 0 || data.tiempo_negras <= 0)) {
           if (intervaloRelojes !== null) {
             clearInterval(intervaloRelojes);
             intervaloRelojes = null;
@@ -365,6 +375,7 @@ document.addEventListener("DOMContentLoaded", function () {
         tiempoLocalNegras = data.tiempo_negras;
         relojActivoLocal = data.reloj_activo;
         pausaLocal = data.pausa || false;
+        sinTiempoLocal = data.sin_tiempo || false;
         // Actualizamos la pantalla
         actualizarDisplayRelojes();
         // Iniciamos el intervalo para actualizar cada segundo

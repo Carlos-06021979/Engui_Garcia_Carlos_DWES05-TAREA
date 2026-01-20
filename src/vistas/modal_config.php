@@ -43,11 +43,14 @@
         <p>
           <strong>Tiempo inicial:</strong>
           <?php
-
-          // Convertimos segundos a minutos y mostramos la unidad correcta (minuto/minutos)
-          $mins = $_SESSION['config']['tiempo_inicial'] / 60; // Convertimos a minutos
-
-          echo $mins . ' minuto' . ($mins != 1 ? 's' : ''); // Mostramos con plural si es necesario
+          // Si es sin tiempo lo indicamos
+          if (isset($_SESSION['config']['sin_tiempo']) && $_SESSION['config']['sin_tiempo']) {
+            echo '♾️ Sin límite de tiempo';
+          } else {
+            // Convertimos segundos a minutos y mostramos la unidad correcta (minuto/minutos)
+            $mins = $_SESSION['config']['tiempo_inicial'] / 60; // Convertimos a minutos
+            echo $mins . ' minuto' . ($mins != 1 ? 's' : ''); // Mostramos con plural si es necesario
+          }
           ?>
         </p>
 
