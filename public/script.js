@@ -832,7 +832,7 @@ function actualizarBotonLimpiar(inputId) {
   const input = document.getElementById(inputId);
   const botonId = "btn-limpiar-" + inputId;
   const boton = document.getElementById(botonId);
-  
+
   if (input && boton) {
     if (input.value.length > 0) {
       boton.classList.add("visible");
@@ -856,7 +856,7 @@ function limpiarFiltro(inputId, modalId) {
 function ordenarPorFecha(modalId) {
   const estado = estadoModalPartidas[modalId];
   const sufijo = modalId === "modalCargarInicial" ? "-inicial" : "";
-  
+
   // Si ya estamos en fecha, cambiar dirección; si no, activar fecha descendente
   if (estado.tipoOrden === "fecha") {
     estado.direccion = estado.direccion === "desc" ? "asc" : "desc";
@@ -864,18 +864,19 @@ function ordenarPorFecha(modalId) {
     estado.tipoOrden = "fecha";
     estado.direccion = "desc";
   }
-  
+
   // Actualizar UI
   const btnFecha = document.getElementById("btn-fecha" + sufijo);
   const btnAlfa = document.getElementById("btn-alfabetico" + sufijo);
   const textoFecha = document.getElementById("texto-fecha" + sufijo);
-  
+
   if (btnFecha && btnAlfa && textoFecha) {
     btnFecha.classList.add("activo");
     btnAlfa.classList.remove("activo");
-    textoFecha.textContent = estado.direccion === "desc" ? "Recientes" : "Antiguas";
+    textoFecha.textContent =
+      estado.direccion === "desc" ? "Recientes" : "Antiguas";
   }
-  
+
   filtrarYOrdenarPartidas(modalId);
 }
 
@@ -883,7 +884,7 @@ function ordenarPorFecha(modalId) {
 function ordenarAlfabeticamente(modalId) {
   const estado = estadoModalPartidas[modalId];
   const sufijo = modalId === "modalCargarInicial" ? "-inicial" : "";
-  
+
   // Si ya estamos en alfabético, cambiar dirección; si no, activar A-Z
   if (estado.tipoOrden === "alfabetico") {
     estado.direccion = estado.direccion === "asc" ? "desc" : "asc";
@@ -891,18 +892,18 @@ function ordenarAlfabeticamente(modalId) {
     estado.tipoOrden = "alfabetico";
     estado.direccion = "asc";
   }
-  
+
   // Actualizar UI
   const btnFecha = document.getElementById("btn-fecha" + sufijo);
   const btnAlfa = document.getElementById("btn-alfabetico" + sufijo);
   const textoAlfa = document.getElementById("texto-alfabetico" + sufijo);
-  
+
   if (btnFecha && btnAlfa && textoAlfa) {
     btnFecha.classList.remove("activo");
     btnAlfa.classList.add("activo");
     textoAlfa.textContent = estado.direccion === "asc" ? "A-Z" : "Z-A";
   }
-  
+
   filtrarYOrdenarPartidas(modalId);
 }
 
@@ -915,7 +916,10 @@ function filtrarYOrdenarPartidas(modalId) {
   if (!estado) return;
 
   // Obtener valor del filtro
-  const inputId = modalId === "modalCargarInicial" ? "filtro-partidas-inicial" : "filtro-partidas";
+  const inputId =
+    modalId === "modalCargarInicial"
+      ? "filtro-partidas-inicial"
+      : "filtro-partidas";
   const input = document.getElementById(inputId);
   const filtro = input ? input.value.toLowerCase() : "";
 
@@ -929,8 +933,12 @@ function filtrarYOrdenarPartidas(modalId) {
 
   // Filtrar
   const itemsFiltrados = items.filter((item) => {
-    const nombre = item.querySelector(".nombre-partida").textContent.toLowerCase();
-    const fecha = item.querySelector(".fecha-partida").textContent.toLowerCase();
+    const nombre = item
+      .querySelector(".nombre-partida")
+      .textContent.toLowerCase();
+    const fecha = item
+      .querySelector(".fecha-partida")
+      .textContent.toLowerCase();
     return nombre.includes(filtro) || fecha.includes(filtro);
   });
 
@@ -1171,7 +1179,10 @@ function inicializarFiltrosModal(modalId) {
   if (!estado) return;
 
   // Resetear filtro
-  const inputId = modalId === "modalCargarInicial" ? "filtro-partidas-inicial" : "filtro-partidas";
+  const inputId =
+    modalId === "modalCargarInicial"
+      ? "filtro-partidas-inicial"
+      : "filtro-partidas";
   const input = document.getElementById(inputId);
   if (input) {
     input.value = "";
@@ -1189,7 +1200,7 @@ function inicializarFiltrosModal(modalId) {
   const btnAlfa = document.getElementById("btn-alfabetico" + sufijo);
   const textoFecha = document.getElementById("texto-fecha" + sufijo);
   const textoAlfa = document.getElementById("texto-alfabetico" + sufijo);
-  
+
   if (btnFecha && btnAlfa) {
     btnFecha.classList.add("activo");
     btnAlfa.classList.remove("activo");
