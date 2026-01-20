@@ -257,7 +257,42 @@ function resolverAcciones()
   }
 
   // Si se pidió eliminar una partida desde la pantalla inicial, la eliminamos
-  if (isset($_POST['eliminar_partida_inicial']) && isset($_POST['archivo_partida'])) eliminarPartida($_POST['archivo_partida']);
+  if (isset($_POST['eliminar_partida_inicial']) && isset($_POST['archivo_partida'])) {
+
+    eliminarPartida($_POST['archivo_partida']); // Eliminamos la partida
+
+    // Si es una petición AJAX, respondemos con JSON
+    if (isset($_POST['ajax_eliminar'])) {
+      header('Content-Type: application/json');
+      $partidasActualizadas = listarPartidas();
+      echo json_encode([
+        'exito' => true,
+        'partidas' => $partidasActualizadas,
+        'mensaje' => empty($partidasActualizadas) ? '✨ Todas las partidas han sido eliminadas' : 'Partida eliminada correctamente'
+      ]);
+      session_write_close();
+      exit;
+    }
+  }
+
+  // Si se pidió eliminar todas las partidas desde la pantalla inicial
+  if (isset($_POST['eliminar_todas_inicial'])) {
+
+    eliminarTodasPartidas(); // Eliminamos todas las partidas
+
+    // Si es una petición AJAX, respondemos con JSON
+    if (isset($_POST['ajax_eliminar'])) {
+      header('Content-Type: application/json');
+      $partidasActualizadas = listarPartidas();
+      echo json_encode([
+        'exito' => true,
+        'partidas' => $partidasActualizadas,
+        'mensaje' => '✨ Todas las partidas han sido eliminadas'
+      ]);
+      session_write_close();
+      exit;
+    }
+  }
 
 
   // Pausa/reanudar manual
@@ -396,6 +431,40 @@ function resolverAcciones()
     $estado['partidasGuardadas'] = listarPartidas(); // Actualizamos la lista de partidas guardadas
 
     $estado['mostrarModalCargar'] = true; // Mostramos el modal de cargar
+
+    // Si es una petición AJAX, respondemos con JSON
+    if (isset($_POST['ajax_eliminar'])) {
+      header('Content-Type: application/json');
+      echo json_encode([
+        'exito' => true,
+        'partidas' => $estado['partidasGuardadas'],
+        'mensaje' => empty($estado['partidasGuardadas']) ? '✨ Todas las partidas han sido eliminadas' : 'Partida eliminada correctamente'
+      ]);
+      session_write_close();
+      exit;
+    }
+  }
+
+  // Si se pidió eliminar todas las partidas
+  if (isset($_POST['eliminar_todas'])) {
+
+    eliminarTodasPartidas(); // Eliminamos todas las partidas
+
+    $estado['partidasGuardadas'] = listarPartidas(); // Actualizamos la lista (debería quedar vacía)
+
+    $estado['mostrarModalCargar'] = true; // Mantenemos el modal abierto
+
+    // Si es una petición AJAX, respondemos con JSON
+    if (isset($_POST['ajax_eliminar'])) {
+      header('Content-Type: application/json');
+      echo json_encode([
+        'exito' => true,
+        'partidas' => $estado['partidasGuardadas'],
+        'mensaje' => '✨ Todas las partidas han sido eliminadas'
+      ]);
+      session_write_close();
+      exit;
+    }
   }
 
   // Procesamiento del juego si hay partida
@@ -1047,6 +1116,18 @@ function eliminarPartida($archivo)
   unlink($rutaArchivo);
 
   return true; // Retornamos true (para indicar que se eliminó correctamente)
+}
+
+// Elimina todas las partidas guardadas y sus avatares asociados
+function eliminarTodasPartidas()
+{
+  $partidas = listarPartidas();
+
+  foreach ($partidas as $partida) {
+    eliminarPartida($partida['archivo']);
+  }
+
+  return true;
 }
 
 

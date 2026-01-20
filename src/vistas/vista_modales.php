@@ -68,6 +68,7 @@ function mostrarModalCargarPartida($partidas)
           <?php endforeach; ?>
         </div>
         <div class="modal-buttons">
+          <button type="button" id="btnEliminarTodas" class="btn-eliminar" onclick="abrirModalConfirmarEliminarTodas(false)">🗑️ Eliminar todas</button>
           <form method="post" style="display: inline;">
             <button type="submit" name="cancelar_modal" class="btn-cancelar">✖️ Cerrar</button>
           </form>

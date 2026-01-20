@@ -317,16 +317,14 @@ function mostrarModalCargarInicial($partidas)
                   <button type="submit" name="cargar_partida_inicial" class="btn-cargar-item">📂 Cargar</button>
                 </form>
                 <!-- Botón para eliminar la partida -->
-                <form method="post" class="formulario-inline">
-                  <input type="hidden" name="archivo_partida" value="<?php echo htmlspecialchars($partida['archivo']); ?>">
-                  <button type="button" class="btn-eliminar-item" onclick="abrirModalConfirmarEliminar('<?php echo htmlspecialchars(addslashes($partida['nombre'])); ?>', '<?php echo htmlspecialchars($partida['archivo']); ?>', true)">🗑️</button>
-                </form>
+              <button type="button" class="btn-eliminar-item" onclick="abrirModalConfirmarEliminar('<?php echo htmlspecialchars(addslashes($partida['nombre'])); ?>', '<?php echo htmlspecialchars($partida['archivo']); ?>', true)">🗑️</button>
               </div>
             </div>
           <?php endforeach; ?>
         </div>
         <!-- Botón para cerrar el modal -->
         <div class="modal-buttons">
+          <button type="button" id="btnEliminarTodasInicial" class="btn-eliminar" onclick="abrirModalConfirmarEliminarTodas(true)">🗑️ Eliminar todas</button>
           <button type="button" class="btn-cancelar" onclick="cerrarModal('modalCargarInicial')">✖️ Cerrar</button>
         </div>
       <?php endif; ?>

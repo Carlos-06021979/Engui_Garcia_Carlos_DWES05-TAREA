@@ -307,6 +307,15 @@
 .btn-eliminar {
   background: linear-gradient(135deg, #ff6b6b 0%, #f5576c 100%);
   color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .btn-eliminar:hover {
