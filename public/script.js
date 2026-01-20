@@ -807,6 +807,175 @@ function setEstadoBotonEliminarTodas(botonId, hayPartidas) {
   boton.style.cursor = hayPartidas ? "pointer" : "not-allowed";
 }
 
+// Objeto global para mantener el estado del filtrado y ordenamiento
+const estadoModalPartidas = {
+  modalCargar: {
+    ordenActual: 0, // 0=Más recientes, 1=Más antiguas, 2=A-Z, 3=Z-A
+    filtroActual: "",
+  },
+  modalCargarInicial: {
+    ordenActual: 0,
+    filtroActual: "",
+  },
+};
+
+// Textos de los estados de ordenamiento
+const textosOrden = [
+  { icono: "🔽", texto: "Más recientes" },
+  { icono: "🔼", texto: "Más antiguas" },
+  { icono: "🔽", texto: "A → Z" },
+  { icono: "🔼", texto: "Z → A" },
+];
+
+// Mostrar/ocultar botón de limpiar filtro
+function actualizarBotonLimpiar(inputId) {
+  const input = document.getElementById(inputId);
+  const botonId = "btn-limpiar-" + inputId;
+  const boton = document.getElementById(botonId);
+  
+  if (input && boton) {
+    if (input.value.length > 0) {
+      boton.classList.add("visible");
+    } else {
+      boton.classList.remove("visible");
+    }
+  }
+}
+
+// Función para limpiar el filtro
+function limpiarFiltro(inputId, modalId) {
+  const input = document.getElementById(inputId);
+  if (input) {
+    input.value = "";
+    actualizarBotonLimpiar(inputId);
+    filtrarYOrdenarPartidas(modalId);
+  }
+}
+
+// Ordenar por fecha (toggle entre recientes/antiguas)
+function ordenarPorFecha(modalId) {
+  const estado = estadoModalPartidas[modalId];
+  const sufijo = modalId === "modalCargarInicial" ? "-inicial" : "";
+  
+  // Si ya estamos en fecha, cambiar dirección; si no, activar fecha descendente
+  if (estado.tipoOrden === "fecha") {
+    estado.direccion = estado.direccion === "desc" ? "asc" : "desc";
+  } else {
+    estado.tipoOrden = "fecha";
+    estado.direccion = "desc";
+  }
+  
+  // Actualizar UI
+  const btnFecha = document.getElementById("btn-fecha" + sufijo);
+  const btnAlfa = document.getElementById("btn-alfabetico" + sufijo);
+  const textoFecha = document.getElementById("texto-fecha" + sufijo);
+  
+  if (btnFecha && btnAlfa && textoFecha) {
+    btnFecha.classList.add("activo");
+    btnAlfa.classList.remove("activo");
+    textoFecha.textContent = estado.direccion === "desc" ? "Recientes" : "Antiguas";
+  }
+  
+  filtrarYOrdenarPartidas(modalId);
+}
+
+// Ordenar alfabéticamente (toggle entre A-Z/Z-A)
+function ordenarAlfabeticamente(modalId) {
+  const estado = estadoModalPartidas[modalId];
+  const sufijo = modalId === "modalCargarInicial" ? "-inicial" : "";
+  
+  // Si ya estamos en alfabético, cambiar dirección; si no, activar A-Z
+  if (estado.tipoOrden === "alfabetico") {
+    estado.direccion = estado.direccion === "asc" ? "desc" : "asc";
+  } else {
+    estado.tipoOrden = "alfabetico";
+    estado.direccion = "asc";
+  }
+  
+  // Actualizar UI
+  const btnFecha = document.getElementById("btn-fecha" + sufijo);
+  const btnAlfa = document.getElementById("btn-alfabetico" + sufijo);
+  const textoAlfa = document.getElementById("texto-alfabetico" + sufijo);
+  
+  if (btnFecha && btnAlfa && textoAlfa) {
+    btnFecha.classList.remove("activo");
+    btnAlfa.classList.add("activo");
+    textoAlfa.textContent = estado.direccion === "asc" ? "A-Z" : "Z-A";
+  }
+  
+  filtrarYOrdenarPartidas(modalId);
+}
+
+// Función para filtrar y ordenar partidas
+function filtrarYOrdenarPartidas(modalId) {
+  const modal = document.getElementById(modalId);
+  if (!modal) return;
+
+  const estado = estadoModalPartidas[modalId];
+  if (!estado) return;
+
+  // Obtener valor del filtro
+  const inputId = modalId === "modalCargarInicial" ? "filtro-partidas-inicial" : "filtro-partidas";
+  const input = document.getElementById(inputId);
+  const filtro = input ? input.value.toLowerCase() : "";
+
+  estado.filtroActual = filtro;
+
+  // Obtener lista de partidas
+  const listaPartidas = modal.querySelector(".lista-partidas");
+  if (!listaPartidas) return;
+
+  const items = Array.from(listaPartidas.querySelectorAll(".item-partida"));
+
+  // Filtrar
+  const itemsFiltrados = items.filter((item) => {
+    const nombre = item.querySelector(".nombre-partida").textContent.toLowerCase();
+    const fecha = item.querySelector(".fecha-partida").textContent.toLowerCase();
+    return nombre.includes(filtro) || fecha.includes(filtro);
+  });
+
+  // Ordenar según el estado actual
+  itemsFiltrados.sort((a, b) => {
+    if (estado.tipoOrden === "fecha") {
+      // Ordenar por fecha
+      const fechaA = a.querySelector(".fecha-partida").textContent;
+      const fechaB = b.querySelector(".fecha-partida").textContent;
+      const resultado = fechaB.localeCompare(fechaA); // Por defecto más reciente primero
+      return estado.direccion === "desc" ? resultado : -resultado;
+    } else {
+      // Ordenar alfabéticamente
+      const nombreA = a.querySelector(".nombre-partida").textContent;
+      const nombreB = b.querySelector(".nombre-partida").textContent;
+      const resultado = nombreA.localeCompare(nombreB);
+      return estado.direccion === "asc" ? resultado : -resultado;
+    }
+  });
+
+  // Reordenar visualmente los elementos en el DOM
+  itemsFiltrados.forEach((item, index) => {
+    listaPartidas.appendChild(item);
+  });
+
+  // Mostrar/ocultar items según filtro
+  items.forEach((item) => {
+    item.style.display = itemsFiltrados.includes(item) ? "flex" : "none";
+  });
+
+  // Mostrar mensaje si no hay resultados
+  let mensajeFiltro = modal.querySelector(".mensaje-filtro");
+  if (itemsFiltrados.length === 0 && items.length > 0) {
+    if (!mensajeFiltro) {
+      mensajeFiltro = document.createElement("p");
+      mensajeFiltro.className = "mensaje-filtro";
+      mensajeFiltro.textContent = "📭 No se encontraron partidas";
+      listaPartidas.insertAdjacentElement("afterend", mensajeFiltro);
+    }
+    mensajeFiltro.style.display = "block";
+  } else if (mensajeFiltro) {
+    mensajeFiltro.style.display = "none";
+  }
+}
+
 // Actualiza la lista y mensajes del modal de partidas (general o inicial)
 function actualizarModalListado(modalId, data, opciones = {}) {
   const { inicial = false } = opciones;
@@ -988,7 +1157,52 @@ function abrirModalCargarInicial() {
   if (modal) {
     // Lo mostramos añadiendo la clase mostrar
     modal.classList.add("mostrar");
+    // Inicializar estado de filtros
+    inicializarFiltrosModal("modalCargarInicial");
   }
+}
+
+// Función para inicializar el estado de filtros cuando se abre un modal
+function inicializarFiltrosModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (!modal) return;
+
+  const estado = estadoModalPartidas[modalId];
+  if (!estado) return;
+
+  // Resetear filtro
+  const inputId = modalId === "modalCargarInicial" ? "filtro-partidas-inicial" : "filtro-partidas";
+  const input = document.getElementById(inputId);
+  if (input) {
+    input.value = "";
+    estado.filtroActual = "";
+    actualizarBotonLimpiar(inputId);
+  }
+
+  // Establecer orden inicial: fecha descendente (más recientes)
+  estado.tipoOrden = "fecha";
+  estado.direccion = "desc";
+
+  // Actualizar UI de los botones
+  const sufijo = modalId === "modalCargarInicial" ? "-inicial" : "";
+  const btnFecha = document.getElementById("btn-fecha" + sufijo);
+  const btnAlfa = document.getElementById("btn-alfabetico" + sufijo);
+  const textoFecha = document.getElementById("texto-fecha" + sufijo);
+  const textoAlfa = document.getElementById("texto-alfabetico" + sufijo);
+  
+  if (btnFecha && btnAlfa) {
+    btnFecha.classList.add("activo");
+    btnAlfa.classList.remove("activo");
+    if (textoFecha) textoFecha.textContent = "Recientes";
+    if (textoAlfa) textoAlfa.textContent = "A-Z";
+  }
+  if (btnFecha) {
+    btnFecha.classList.remove("activo", "ascendente", "descendente");
+    btnFecha.classList.add("activo", "descendente");
+  }
+
+  // Aplicar filtro/orden
+  filtrarYOrdenarPartidas(modalId);
 }
 
 // ========================================

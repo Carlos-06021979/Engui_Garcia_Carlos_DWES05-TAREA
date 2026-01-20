@@ -228,6 +228,120 @@
   margin-bottom: 20px;
 }
 
+/* Filtros para búsqueda y ordenamiento */
+.filtros-partidas {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  align-items: stretch;
+}
+
+.contenedor-filtro {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  background: white;
+  height: 46px;
+  overflow: hidden;
+}
+
+.contenedor-filtro:focus-within {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
+  background: #fafbff;
+}
+
+.input-filtro {
+  flex: 1;
+  padding: 0 16px;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent;
+  font-size: 0.95em;
+  color: #333;
+  line-height: 46px;
+  height: 100%;
+}
+
+.input-filtro::placeholder {
+  color: #aaa;
+  font-weight: 400;
+}
+
+.btn-limpiar-filtro {
+  padding: 0 14px;
+  border: none;
+  background: transparent;
+  color: #999;
+  cursor: pointer;
+  font-size: 1.3em;
+  transition: all 0.2s ease;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.btn-limpiar-filtro:hover {
+  color: #667eea;
+  transform: scale(1.2);
+}
+
+.btn-limpiar-filtro.visible {
+  display: flex;
+}
+
+.botones-orden {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-orden {
+  padding: 0 18px;
+  border: 2px solid #e0e0e0;
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  border-radius: 10px;
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  min-width: 110px;
+  white-space: nowrap;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #555;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.btn-orden:hover {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.2);
+  color: #667eea;
+}
+
+.btn-orden:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-orden.activo {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+
 .item-partida {
   display: flex;
   justify-content: space-between;
@@ -301,6 +415,14 @@
   padding: 40px;
   color: #999;
   font-size: 1.1em;
+}
+
+.mensaje-filtro {
+  text-align: center;
+  padding: 20px;
+  color: #999;
+  font-size: 1em;
+  display: none;
 }
 
 /* Estilos para botones en modales de confirmación */

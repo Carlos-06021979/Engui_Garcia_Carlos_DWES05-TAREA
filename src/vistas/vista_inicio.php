@@ -292,6 +292,23 @@ function mostrarModalCargarInicial($partidas)
     <div class="modal-content modal-lista">
       <!-- Título del modal -->
       <h2>📁 Cargar Partida Guardada</h2>
+      <?php if (!empty($partidas)): ?>
+        <!-- Filtros de búsqueda y ordenamiento -->
+        <div class="filtros-partidas">
+          <div class="contenedor-filtro">
+            <input type="text" id="filtro-partidas-inicial" class="input-filtro" placeholder="🔍 Buscar partida..." oninput="actualizarBotonLimpiar('filtro-partidas-inicial'); filtrarYOrdenarPartidas('modalCargarInicial')">
+            <button type="button" class="btn-limpiar-filtro" id="btn-limpiar-filtro-partidas-inicial" onclick="limpiarFiltro('filtro-partidas-inicial', 'modalCargarInicial')">✕</button>
+          </div>
+          <div class="botones-orden">
+            <button type="button" class="btn-orden activo" id="btn-fecha-inicial" onclick="ordenarPorFecha('modalCargarInicial')" title="Ordenar por fecha">
+              🕒 <span id="texto-fecha-inicial">Recientes</span>
+            </button>
+            <button type="button" class="btn-orden" id="btn-alfabetico-inicial" onclick="ordenarAlfabeticamente('modalCargarInicial')" title="Ordenar alfabéticamente">
+              🔤 <span id="texto-alfabetico-inicial">A-Z</span>
+            </button>
+          </div>
+        </div>
+      <?php endif; ?>
       <?php if (empty($partidas)): ?>
         <!-- Si no hay partidas guardadas, mostramos un mensaje vacío -->
         <p class="mensaje-vacio">No hay partidas guardadas</p>
@@ -330,5 +347,11 @@ function mostrarModalCargarInicial($partidas)
       <?php endif; ?>
     </div>
   </div>
+  <!-- Script para inicializar filtros al renderizar el modal -->
+  <script>
+    if (typeof inicializarFiltrosModal === 'function') {
+      inicializarFiltrosModal('modalCargarInicial');
+    }
+  </script>
 <?php
 }

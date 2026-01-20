@@ -37,6 +37,23 @@ function mostrarModalCargarPartida($partidas)
   <div id="modalCargar" class="modal-overlay">
     <div class="modal-content modal-lista">
       <h2>📁 Cargar Partida</h2>
+      <?php if (!empty($partidas)): ?>
+        <!-- Filtros de búsqueda y ordenamiento -->
+        <div class="filtros-partidas">
+          <div class="contenedor-filtro">
+            <input type="text" id="filtro-partidas" class="input-filtro" placeholder="🔍 Buscar partida..." oninput="actualizarBotonLimpiar('filtro-partidas'); filtrarYOrdenarPartidas('modalCargar')">
+            <button type="button" class="btn-limpiar-filtro" id="btn-limpiar-filtro-partidas" onclick="limpiarFiltro('filtro-partidas', 'modalCargar')">✕</button>
+          </div>
+          <div class="botones-orden">
+            <button type="button" class="btn-orden activo" id="btn-fecha" onclick="ordenarPorFecha('modalCargar')" title="Ordenar por fecha">
+              🕒 <span id="texto-fecha">Recientes</span>
+            </button>
+            <button type="button" class="btn-orden" id="btn-alfabetico" onclick="ordenarAlfabeticamente('modalCargar')" title="Ordenar alfabéticamente">
+              🔤 <span id="texto-alfabetico">A-Z</span>
+            </button>
+          </div>
+        </div>
+      <?php endif; ?>
       <?php if (empty($partidas)): ?>
         <!-- Si no hay partidas guardadas, lo indicamos -->
         <p class="mensaje-vacio">No hay partidas guardadas</p>
@@ -76,6 +93,12 @@ function mostrarModalCargarPartida($partidas)
       <?php endif; ?>
     </div>
   </div>
+  <!-- Script para inicializar filtros al renderizar el modal -->
+  <script>
+    if (typeof inicializarFiltrosModal === 'function') {
+      inicializarFiltrosModal('modalCargar');
+    }
+  </script>
 <?php
 }
 
