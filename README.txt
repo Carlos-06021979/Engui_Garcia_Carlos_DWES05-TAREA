@@ -22,15 +22,32 @@ Pantalla inicial "Configuración de partida":
       -Podremos asignar un avatar a cada jugador siendo las posibilidades:
         -Sin avatar (lo que saldrá una esfera de su color).
         -Cualquier ficha del tablero de su color (torre, caballo, alfil, dama, rey o peón).
-        -Un "relieve/busto de perfil de usuario" del color de las fichas con la que juega cada uno.
-        -Una imagen personalizada (formatos PNG, JPG o GIF y de máximo 5MB) pudiendo seleccionarla
-         desde el explorador de archivos su sistema operativo (seleccionando la opción "subir imagen 
-         personalizada" del desplegable y clicando posteriormente en el botón "Elegir imagen"). Se puede 
+        -Un "relieve/busto de perfil de usuario" del color de las fichas con la que juega cada uno (Usuario).
+        -Uno de los gifs predeterminados:
+            -Alfil que cambia de color
+            -Un fragmento de una partida de Anand contra Kasparov
+            -Un agradable anciano jugando al ajedrez en un parque (sacado de un corto)
+            -Bart Simpson jugando una multi-partida
+            -Una animación de como una ficha de ajedrez pega un sillazo a una ficha oponente
+            -Un gato moviendo una ficha
+
+        -Una imagen de cada uno de los campeones de ajedrez (por si quieres sentirte en la piel de un campeón):
+            -Magnus Carlsen
+            -Garry Kasparov
+            -Bobby Fischer 
+            -Antoly Karpov
+            -Viswanathan Anand
+            -Judit Polgar
+
+        -Una imagen o gif personalizado (formatos PNG, JPG o GIF y de máximo 5MB) pudiendo seleccionarla
+         desde el explorador de archivos su sistema operativo (seleccionando la opción "Imagen o GIF personalizado" 
+         del desplegable y clicando posteriormente en el botón "Elegir imagen"). Se puede 
          ver una previsualización de dicha imagen antes de comenzar la partida y posteriormente se 
          visualizará en los relojes de cada jugador durante la partida.
     
   -En la sección "Configuración del tiempo" podremos:
       -Seleccionar los distintos tiempos iniciales por jugador que nos ofrece:
+        -Sin tiempo (partida sin límite) para que, si se acaba la partida, no sea culpa del tiempo
         -Partida ultra-rápida de 1 minuto (Bullet en términos de ajedrez).
         -Partida rápida de 3 o 5 minutos (Blitz en términos de ajedrez).
         -Partida clásica de 30 min (que es la que está por defecto si no 
@@ -39,13 +56,13 @@ Pantalla inicial "Configuración de partida":
 
       -Seleccionar un incremento de 1, 2, 3, 5 o 10 segundos extra al reloj del jugador después 
        de cada movimiento (regla de Bobby Fischer, campeón mundial de ajedrez) para que no se 
-       acabe la partida sólo por falta de tiempo en posiciones complicadas.
+       acabe la partida sólo por falta de tiempo en posiciones complicadas. Por defecto está sin incremento
 
   -En la sección "Configuración de interfaz" podremos:
       -Mostrar u ocultar las coordenadas (A-H, 1-8).
-      -Mostrar piezas capturadas.
+      -Mostrar u ocultar la piezas capturadas.
 
-  - Pulsando el botón "Iniciar Partida Nueva" iniciaremos el juego.
+  - Pulsando el botón "Iniciar Partida Nueva" iniciaremos el juego. Mucha suerte!!!
 
 
 -----------------------------------------------
@@ -54,7 +71,8 @@ Pantalla de partida/juego "Partida de Ajedrez":
   -Empezando de arriba hacia abajo tenemos:
     -Icono representativo de un peón con el literal Partida de Ajedrez como título, botón de ajustes con:
       -Las opciones de interfaz para mostrar u ocultar tanto las coordenadas del tablero (A-H, 1-8)
-       como el panel de piezas capturadas (estas 2 cosas se aplicarán en tiempo real)
+       como el panel de piezas capturadas (estas 2 configuraciones se aplicarán en tiempo real)
+
       -Información del tiempo:
         -Tiempo inicial
         -Incremento Fischer
@@ -64,7 +82,8 @@ Pantalla de partida/juego "Partida de Ajedrez":
         -Botón de Cancelar para salir del modal
         -La partida se mantendrá pausada mientras tomemos decisiones y no cerremos el modal
         -Configuración persistente entre sesiones
-    Botón de pause/play donde podremos pausar o reanudar la partida (cuando la partida esté pausada, 
+
+      -Botón de pause/play donde podremos pausar o reanudar la partida (cuando la partida esté pausada, 
     se habilitará el botón de "Guardar partida". También se auto-pausará cuando estemos tomando 
     decisiones (como por ejemplo en una ventana modal y se reanudará al salir de ella y volver a la partida))
 
@@ -87,7 +106,6 @@ Pantalla de partida/juego "Partida de Ajedrez":
         · POR QUÉ ha ganado (Jaque mate, tiempo agotado, rendición, tablas, etc.)
         · Puntuación final de cada jugador
 
-
     -Contadores de tiempo restante de cada jugador, sus avatares (si los tuvieran), nombres y puntuación 
      En principio empiezan por cero puntos y van sumando conforme vayan capturando piezas del contrario:
       - Dama = 9 pts
@@ -106,7 +124,7 @@ Pantalla de partida/juego "Partida de Ajedrez":
        -Resaltado amarillo de casilla seleccionada
        -Círculos verdes para movimientos válidos
        -Borde rojo pulsante para capturas
-     y paneles laterales de fichas capturadas de cada jugador
+     y paneles laterales de fichas capturadas del oponente de cada jugador
 
     -Fila de botones con las siguientes funciones:
       -Botón de deshacer movimiento/s (hasta 10 movimientos)
