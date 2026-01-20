@@ -68,13 +68,24 @@ Pantalla de partida/juego "Partida de Ajedrez":
     se habilitará el botón de "Guardar partida". También se auto-pausará cuando estemos tomando 
     decisiones (como por ejemplo en una ventana modal y se reanudará al salir de ella y volver a la partida))
 
-    -Contenedor de información e iteración con el/los usuario/s - jugador/es:
-      - Turno actual
-      - Detección de jaque, jaque mate 
-      - Errores de movimiento
-      - Promoción de peón (cuando llega un peón a la parte contraria, el usuario/jugador puede elegir 
-        por cual ficha promocionar (una Dama, una Torre, un Alfil o un Caballo))
-      - Fin de partida
+    -Contenedor de información e iteracción con el/los usuario/s - jugador/es que te mantiene siempre informado:
+      - TURNO ACTUAL: Te indica claramente quién debe mover en cada momento con mensajes como 
+        "Turno de Blancas" o "Turno de Negras"
+      - ESTADO DE LA PARTIDA: 
+        · PAUSA: Si la partida está pausada, verás un mensaje indicándolo para que sepas que 
+          el tiempo no está corriendo
+        · JAQUE: Cuando tu rey está bajo amenaza, recibirás una advertencia clara avisándote de que 
+          estás en jaque y tienes que hacer un movimiento legal para salir de esa situación
+        · JAQUE MATE: Se detecta automáticamente y te avisa de que la partida ha terminado, mostrando 
+          quién ha ganado y por qué
+      - ERRORES DE MOVIMIENTO: Si intentas un movimiento ilegal, el sistema te lo comunica indicando 
+        qué está mal (ej. "No puedes dejar a tu rey en jaque", "Pieza bloqueada", etc.)
+      - PROMOCIÓN DE PEÓN: Cuando llega un peón a la parte contraria, el usuario/jugador puede elegir 
+        por cuál ficha promocionar (una Dama, una Torre, un Alfil o un Caballo)
+      - FIN DE PARTIDA: Al terminar la partida, se informa claramente:
+        · Quién ha ganado (Blancas o Negras)
+        · POR QUÉ ha ganado (Jaque mate, tiempo agotado, rendición, tablas, etc.)
+        · Puntuación final de cada jugador
 
 
     -Contadores de tiempo restante de cada jugador, sus avatares (si los tuvieran), nombres y puntuación 
@@ -86,6 +97,9 @@ Pantalla de partida/juego "Partida de Ajedrez":
       - Peón = 1 pt
       - Rey = 0 pts
       
+    -OPCIÓN DE JUEGO SIN TIEMPO: Si no deseas tener presión de tiempo, puedes jugar una partida sin limite 
+     temporal. El reloj mostrará infinito (∞) en lugar de ir contando hacia atrás. Perfecto para disfrutar 
+     del ajedrez sin estrés.
 
     -Tablero de juego (8x8) con patrón ajedrezado, con las fichas de ambos jugadores, marco de coordenadas 
      (A-H, 1-8) opcionales, indicadores visuales de movimientos posibles:
@@ -98,8 +112,10 @@ Pantalla de partida/juego "Partida de Ajedrez":
       -Botón de deshacer movimiento/s (hasta 10 movimientos)
       -Botón de revancha para volver a hacer una partida con la misma configuración de jugadores, tiempo y vista
       -Botón para guardar una partida y así poder reanudarla posteriormente cuando se desee:
-        -Se puede editar el nombre de guardado que viene por defecto
-        -Se almacena en formato JSON con el estado completo de piezas, tiempo, turno e historial
+        -Se abre un modal de guardado donde:
+          · Puedes MODIFICAR EL NOMBRE de la partida guardada (viene con un nombre por defecto tipo 
+            "Jugador_1 vs Jugador_2 - 20/01/2026 20:08", pero puedes cambiar el nombre a lo que quieras)
+          · Se almacena en formato JSON con el estado completo de piezas, tiempo, turno e historial
         -Sólo estará disponible cuando pongamos la partida en pausa
       -Botón de nueva partida para comenzar una nueva partida (con ventana modal de conformación por si hemos 
        clicado sin querer dicho botón y así evitar errores y sustos y más si ibas a ganar 😜)
@@ -114,6 +130,40 @@ Pantalla de partida/juego "Partida de Ajedrez":
   -Detección de movimientos ilegales
   -Cuando se acabe el tiempo de alguno de los jugadores, se acabará la partida y se 
    informará de quien ha perdido y quien ha ganado
+
+
+
+-----------------------------------------------
+Gestión de partidas guardadas:
+-----------------------------------------------
+Dentro de la pantalla de configuración inicial, tienes una sección especial para gestionar tus 
+partidas guardadas, donde puedes:
+
+  CARGAR UNA PARTIDA:
+    1-. Haz clic en "📁 Cargar Partida Guardada"
+    2-. Se abre un modal con todas tus partidas guardadas
+    3-. Tienes varias opciones para encontrar la partida que buscas:
+        -BÚSQUEDA: Escribe parte del nombre de la partida (o la fecha) en el campo de búsqueda
+         y el sistema filtrará automáticamente mostrando sólo las que coincidan.
+        -LIMPIAR FILTRO: Haz clic en la "X" que aparece en el campo cuando escribes algo.
+        -ORDENAMIENTO:
+          · 🕒 BOTÓN DE FECHA: Pulsa para cambiar entre "Recientes" (más nuevas primero) 
+            o "Antiguas" (más viejas primero).
+          · 🔤 BOTÓN ALFABÉTICO: Pulsa para cambiar entre "A-Z" o "Z-A" alfabético del nombre.
+           Solo uno de los botones puede estar activo a la vez, así sabes qué tipo de 
+           ordenamiento estás usando.
+    4-. Una vez encuentres tu partida, haz clic en "📂 Cargar" para reanudarla.
+
+  ELIMINAR PARTIDAS:
+    -ELIMINAR UNA POR UNA: Junto a cada partida hay un botón "🗑️" rojo. Al hacer clic, 
+     aparecerá una ventana pidiendo confirmación para asegurar que no lo haces por error.
+    
+    -ELIMINAR TODAS DE GOLPE: Si no necesitas ninguna de tus partidas, pulsa el botón 
+     "🗑️ Eliminar todas" (también te pedirá confirmación). Esto elimina todas tus partidas 
+     guardadas en un solo click (¡ojo, es definitivo!).
+
+    -Las partidas se eliminan sin salir del modal, así que después de eliminar puedes seguir 
+     navegando tus partidas o cargar una que te hayas dejado.
 
 
 
@@ -149,6 +199,11 @@ Reglas avanzadas:
 - PREVENCIÓN DE MOVIMIENTOS ILEGALES:
   - No puedes moverte si dejas a tu rey en jaque
   - Validación en tiempo real
+  
+- CAPTURA DE FICHAS:
+  - Cuando capturas una pieza del contrario, automáticamente aparece en tu panel lateral 
+    de "Fichas capturadas"
+  - Se suma la puntuación de la pieza capturada a tu marcador
 
 -----------------------------------------------
 Jugando una partida:
@@ -218,25 +273,26 @@ EJEMPLOS:
 
 
 Aún se podría mejorar más:
-  -Partida sin tiempo
   -Multilenguaje (prácticamente, sería sencillo ya que son una número limitado de frases y siempre son las mismas 
    e incluso con un patrón Observer podríamos cambiar el idioma incluso en tiempo real sin necesidad de hacerlo en 
-   el inicio de la partida nii tener que reiniciarla)
+   el inicio de la partida ni tener que reiniciarla)
   -Más información al usuario.
   -Devolver tiempo perdido a los usuarios al deshacer movimientos
   -Mejoras de UX:
-    -Animaciones.
+    -Animaciones (movimientos más fluidos, transiciones suaves)
     -Más información al usuario (como por ejemplo al entrar en ajustes durante la partida, 
-     informar de más cosas como el tiempo qu ele queda a cada jugador, fichas capturadas y 
+     informar de más cosas como el tiempo que le queda a cada jugador, fichas capturadas y 
      puntuación de cada jugador, más opciones en ese modal que sólo están en la pantalla de 
      partida, etc)
     -Sonidos (al mover las fichas, acabar el juego, aviso acústico de alguna información, 
-     terminación de partida, etc) 
+     terminación de partida, jaque mate, etc) 
     -Temas (Oscuro/Light o personalización más personalizada y completa)
     -Videos explicativos (de ejemplos de uso)
-    -Pequeño tour de para que sirve cada elemento del juego
+    -Pequeño tour para que sepas para qué sirve cada elemento del juego
     -Resaltado del cursor 
-  -Validación de tablas
+    -Notificaciones visuales más destacadas para eventos importantes
+  -Validación de tablas (mejorar la detección de tablas por repetición o 50 movimientos)
   -Modo multijugador online con WebSockets
   -Guardar puntuaciones con nombres al terminar
   -Que se pudiera jugar contra la computadora, pero eso ya es una funcionalidad muy avanzada
+  -Posibilidad de ver un replay o análisis de la partida después de terminar
