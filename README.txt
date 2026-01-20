@@ -12,7 +12,7 @@ Pantalla inicial "Configuración de partida":
 -----------------------------------------------
   -En la sección "¿Deseas continuar con una partida anterior?"
     -Si hay una/s partida/s guardada/s, primero te da la opción de poder reanudarlas:
-      -Si no las hemos renombrado anteriormente al guardar, su nombre/s por defecto serán 
+      -Si no las hemos renombrado anteriormente al guardar, su/s nombre/s por defecto serán 
        Nombre_jugador_blancas vs Nombre_jugador_negras - dd/mm/YYYY hh:mm
 
   -En la sección "Configuración de los jugadores" podremos:
