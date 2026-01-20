@@ -33,6 +33,14 @@
   font-size: 1.3em;
 }
 
+.mensaje.advertencia {
+  background: #ffebee;
+  border-left: 4px solid #f44336;
+  border-right: 4px solid #f44336;
+  color: #c62828;
+  font-weight: bold;
+}
+
 /* ========================================
    RESPONSIVE GENERAL
    ======================================== */

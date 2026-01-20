@@ -114,6 +114,9 @@ $partidasGuardadasInicio = $estado['partidasGuardadasInicio'];
                           } elseif ($partida && $partida->estaTerminada()) {
                             // Si terminó, le ponemos otra clase especial
                             echo 'terminada';
+                          } elseif (isset($mensaje) && strpos($mensaje, 'límite') !== false) {
+                            // Si es un mensaje de límite de movimientos, lo marcamos como advertencia
+                            echo 'advertencia';
                           }
                           ?>">
         <?php

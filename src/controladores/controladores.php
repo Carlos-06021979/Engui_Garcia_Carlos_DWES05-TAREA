@@ -556,6 +556,14 @@ function procesarGuardarConfiguracion()
 
   // Guardamos si mostrar o no las piezas capturadas
   $_SESSION['config']['mostrar_capturas'] = isset($_POST['mostrar_capturas']);
+
+  // Guardamos la configuración de movimientos a deshacer (si se modificó)
+  if (isset($_POST['max_movimientos_deshacer'])) {
+    $maxMovimientos = intval($_POST['max_movimientos_deshacer']);
+    $_SESSION['config']['max_movimientos_deshacer'] = max(0, min(10, $maxMovimientos)); // Asegurar que esté entre 0-10
+    // Resetear el contador de movimientos deshechados cuando se cambia la configuración
+    $_SESSION['movimientos_deshechados'] = 0;
+  }
 }
 
 
@@ -610,7 +618,9 @@ function iniciarPartida()
 
     'mostrar_capturas' => isset($_POST['mostrar_capturas']), // Mostrar piezas capturadas
 
-    'sin_tiempo' => ((int)$_POST['tiempo_inicial'] === 0) // Flag para partida sin tiempo
+    'sin_tiempo' => ((int)$_POST['tiempo_inicial'] === 0), // Flag para partida sin tiempo
+
+    'max_movimientos_deshacer' => isset($_POST['max_movimientos_deshacer']) ? intval($_POST['max_movimientos_deshacer']) : 5 // Máximo movimientos a deshacer
   ];
 
   // Creamos una nueva partida con los nombres de los jugadores
@@ -631,6 +641,9 @@ function iniciarPartida()
   $_SESSION['nombres_configurados'] = true; // Marcamos que ya se configuró la partida
 
   $_SESSION['pausa'] = false; // La partida no está pausada al inicio
+
+  // Inicializamos el contador de movimientos deshechados
+  $_SESSION['movimientos_deshechados'] = 0;
 
   // Guardamos los avatares elegidos de ambos jugadores
 
@@ -845,10 +858,29 @@ function procesarJugada($partida)
 // Para deshacer la última jugada realizada
 function deshacerJugada($partida)
 {
+  // Obtener el máximo de movimientos permitidos a deshacer
+  $maxMovimientos = isset($_SESSION['config']['max_movimientos_deshacer']) ? $_SESSION['config']['max_movimientos_deshacer'] : 5;
+  
+  // Si el máximo es 0, no permitimos deshacer
+  if ($maxMovimientos == 0) {
+    $partida->setMensaje("No está permitido deshacer movimientos en esta partida");
+    return;
+  }
+  
+  // Contar cuántos movimientos se han deshecho usando una variable de sesión
+  if (!isset($_SESSION['movimientos_deshechados'])) {
+    $_SESSION['movimientos_deshechados'] = 0;
+  }
+  
+  // Si ya hemos llegado al máximo, no permitimos más
+  if ($_SESSION['movimientos_deshechados'] >= $maxMovimientos) {
+    $partida->setMensaje("Has alcanzado el límite de movimientos a deshacer (" . $maxMovimientos . ")");
+    return;
+  }
+  
   $partida->deshacerJugada(); // Deshacemos la última jugada
-
+  $_SESSION['movimientos_deshechados']++; // Incrementar contador
   $_SESSION['casilla_seleccionada'] = null; // Limpiamos la casilla seleccionada
-
   $_SESSION['partida'] = serialize($partida); // Guardamos la partida en session
 }
 

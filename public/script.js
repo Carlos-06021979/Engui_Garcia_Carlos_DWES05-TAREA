@@ -4,11 +4,10 @@
 // Obtenemos los elementos principales del modal de configuración
 const modal = document.getElementById("modalConfiguracion");
 const btnConfiguracion = document.getElementById("btnConfiguracion");
-const closeModal = document.querySelector(".close-modal");
 const btnCancelar = document.querySelector(".btn-cancelar-config");
 
 // Si todos los elementos existen, configuramos el comportamiento del modal
-if (modal && btnConfiguracion && closeModal && btnCancelar) {
+if (modal && btnConfiguracion && btnCancelar) {
   // Función para reanudar la partida después de cerrar los ajustes
   function reanudarDesdeModal() {
     // Enviamos una solicitud al servidor para reanudar la partida
@@ -75,8 +74,8 @@ if (modal && btnConfiguracion && closeModal && btnCancelar) {
       .catch((e) => console.error("No se pudo pausar al abrir ajustes:", e));
   };
 
-  // Cuando se hace clic en la X del modal
-  closeModal.onclick = () => {
+  // Cuando se hace clic en el botón Cancelar del modal
+  btnCancelar.onclick = () => {
     modal.style.display = "none";
     // Reanudamos la partida
     reanudarDesdeModal();
@@ -113,13 +112,17 @@ const chkCoords = modal
 const chkCapturas = modal
   ? modal.querySelector('input[name="mostrar_capturas"]')
   : null;
+const selectMovimientos = modal
+  ? modal.querySelector('select[name="max_movimientos_deshacer"]')
+  : null;
 
 // Si el formulario existe, controlamos que el botón guardar solo se active si hay cambios
 if (formConfig && btnGuardarConfig && chkCoords && chkCapturas) {
-  // Guardamos el estado inicial de los checkboxes
+  // Guardamos el estado inicial de los checkboxes y el selector
   const estadoInicial = {
     coords: chkCoords.checked,
     capturas: chkCapturas.checked,
+    movimientos: selectMovimientos ? selectMovimientos.value : null,
   };
 
   // Función para actualizar el estado del botón guardar
@@ -127,11 +130,19 @@ if (formConfig && btnGuardarConfig && chkCoords && chkCapturas) {
     // Verificamos si algo cambió comparando con el estado inicial
     const cambiado =
       chkCoords.checked !== estadoInicial.coords ||
-      chkCapturas.checked !== estadoInicial.capturas;
+      chkCapturas.checked !== estadoInicial.capturas ||
+      (selectMovimientos && selectMovimientos.value !== estadoInicial.movimientos);
     // Si nada cambió, deshabilitamos el botón
     btnGuardarConfig.disabled = !cambiado;
     btnGuardarConfig.classList.toggle("btn-disabled", !cambiado);
   };
+
+  // Añadimos listeners a los checkboxes y al selector
+  chkCoords.addEventListener("change", actualizarEstadoGuardar);
+  chkCapturas.addEventListener("change", actualizarEstadoGuardar);
+  if (selectMovimientos) {
+    selectMovimientos.addEventListener("change", actualizarEstadoGuardar);
+  }
 
   // Cuando se hace clic en guardar cambios
   btnGuardarConfig.addEventListener("click", (e) => {

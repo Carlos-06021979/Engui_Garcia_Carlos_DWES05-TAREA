@@ -285,7 +285,7 @@ function mostrarTablero($partida, $casillaSeleccionada, $turno, $piezasCapturada
           <!-- SECCIÓN: Gestión de partida -->
           <h4 class="titulo-seccion-separado">Gestión de partida:</h4>
           <ul class="lista-sin-estilo">
-            <li><strong>Deshacer</strong>: Deshace el último movimiento realizado</li>
+            <li><strong>Deshacer</strong>: Deshace el último movimiento realizado (limitado a un número configurable de movimientos)</li>
             <li><strong>Revancha</strong>: Inicia una nueva partida manteniendo jugadores y configuración</li>
             <li><strong>Guardar partida</strong>: Guarda la partida actual para continuarla después (requiere pausar)</li>
             <li><strong>Volver al inicio</strong>: Regresa a la pantalla inicial para configurar una nueva partida</li>
@@ -299,6 +299,7 @@ function mostrarTablero($partida, $casillaSeleccionada, $turno, $piezasCapturada
             <li><strong>Incremento Fischer</strong>: Tiempo adicional por cada movimiento</li>
             <li><strong>Mostrar coordenadas</strong>: Activa/desactiva las letras y números del tablero</li>
             <li><strong>Mostrar capturas</strong>: Visualiza las piezas capturadas</li>
+            <li><strong>Deshacer movimientos</strong>: Establece el límite de movimientos que se pueden deshacer (0-10)</li>
           </ul>
         </div>
       </div>

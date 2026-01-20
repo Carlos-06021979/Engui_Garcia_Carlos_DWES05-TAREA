@@ -8,6 +8,15 @@ lo que pide el enunciado de la tarea que no he podido hacer correctamente con PH
 Es un motor de ajedrez lo más completo posible.
 
 -----------------------------------------------
+PANTALLA DE BIENVENIDA (Al acceder a la aplicación):
+-----------------------------------------------
+Cuando accedes por primera vez a la aplicación, verás una pantalla de presentación con:
+  -Un tablero de ajedrez animado (que gira lentamente) como fondo visual
+  -Un título destacado "Ajedrez" con iconografía alusiva
+  -Un botón para comenzar: "Comenzar" que te lleva a la pantalla de configuración inicial
+  -Una presentación visual atractiva que te da la bienvenida al juego
+
+-----------------------------------------------
 Pantalla inicial "Configuración de partida":
 -----------------------------------------------
   -En la sección "¿Deseas continuar con una partida anterior?"
@@ -57,6 +66,14 @@ Pantalla inicial "Configuración de partida":
       -Seleccionar un incremento de 1, 2, 3, 5 o 10 segundos extra al reloj del jugador después 
        de cada movimiento (regla de Bobby Fischer, campeón mundial de ajedrez) para que no se 
        acabe la partida sólo por falta de tiempo en posiciones complicadas. Por defecto está sin incremento
+
+  -En la sección "Opciones de interfaz" podremos:
+      -Mostrar u ocultar las coordenadas (A-H, 1-8).
+      -Mostrar piezas capturadas.
+      -Configurar el número de movimientos permitidos a deshacer: desde 0 (sin posibilidad 
+       de deshacer ningún movimiento) hasta 10 (máximo). Por defecto viene configurado con 5 
+       movimientos. Esto te permite controlar cuánto puedes "arrepentirte" de tus decisiones 
+       durante la partida.
 
   -En la sección "Configuración de interfaz" podremos:
       -Mostrar u ocultar las coordenadas (A-H, 1-8).
@@ -127,18 +144,26 @@ Pantalla de partida/juego "Partida de Ajedrez":
      y paneles laterales de fichas capturadas del oponente de cada jugador
 
     -Fila de botones con las siguientes funciones:
-      -Botón de deshacer movimiento/s (hasta 10 movimientos)
-      -Botón de revancha para volver a hacer una partida con la misma configuración de jugadores, tiempo y vista
+      -Botón de deshacer movimiento/s (configurable entre 0 y 10movimientos)
+
+      -Botón de revancha para volver a hacer una partida con la misma configuración de jugadores, tiempo, 
+       numero de movimientos a deshacer y vista
+
       -Botón para guardar una partida y así poder reanudarla posteriormente cuando se desee:
         -Se abre un modal de guardado donde:
-          · Puedes MODIFICAR EL NOMBRE de la partida guardada (viene con un nombre por defecto tipo 
-            "Jugador_1 vs Jugador_2 - 20/01/2026 20:08", pero puedes cambiar el nombre a lo que quieras)
-          · Se almacena en formato JSON con el estado completo de piezas, tiempo, turno e historial
-        -Sólo estará disponible cuando pongamos la partida en pausa
+          - Puedes modificar el nombre de la partida guardada (viene con un nombre por defecto tipo 
+            "Jugador_1 vs Jugador_2 - dd/mm/YYYY hh:mm")
+          - Se almacena en formato JSON con el estado completo de piezas, tiempo, turno e historial
+        -Sólo estará disponible cuando pongamos la partida en pausa. Después de guardar, puedes 
+         seguir jugando desde donde lo dejaste o volver al inicio para cargar otra partida guardada
+
       -Botón de nueva partida para comenzar una nueva partida (con ventana modal de conformación por si hemos 
        clicado sin querer dicho botón y así evitar errores y sustos y más si ibas a ganar 😜)
+
+      -Botón de volver al inicio con el cual nos llevará a la pantalla de inicio
       
-    -Desplegable de historial de movimientos en formato algebraico de cada jugador
+    -Desplegable de historial de movimientos en formato algebraico de cada jugador donde se irá imprimiendo en 
+     tiempo real cada uno de los movimientos de los jugadores
 
     -Desplegable de reglas y controles del juego
 
@@ -189,6 +214,15 @@ partidas guardadas, donde puedes:
 Reglas avanzadas:
 -----------------------------------------------
 
+FILTRADO Y ORDENAMIENTO DE PARTIDAS:
+- Cuando cargas partidas guardadas, tienes herramientas para encontrlas fácilmente:
+  - FILTRO DE BÚSQUEDA: Escribe en el campo de búsqueda para filtrar por nombre o fecha
+  - BOTÓN 🕒 (FECHA): Ordena por fecha de guardado (Recientes primero o Antiguas primero)
+  - BOTÓN 🔤 (ALFABÉTICO): Ordena alfabéticamente (A-Z o Z-A)
+  - BOTÓN X: Limpia el filtro de búsqueda
+  - Solo un tipo de ordenamiento puede estar activo a la vez para mayor claridad
+  - Los cambios de filtro y ordenamiento se aplican en tiempo real sin salir del modal
+
 - JAQUE: Detecta cuando el rey está amenazado
 
 - JAQUE MATE: Detecta cuando no hay movimientos legales para salir del jaque
@@ -231,11 +265,13 @@ PASO 1: Seleccionar pieza
    - Verás círculos verdes en movimientos válidos
    - Bordes rojos pulsantes indican capturas posibles
 
-PASO 2: Mover pieza (se podrá deshacer posteriormente hasta los 10 últimos movimientos 
+PASO 2: Mover pieza (se podrá deshacer posteriormente según lo que hayas configurado 
         clicando el botón "Deshacer"")
    - Haz clic en una casilla marcada en verde
    - La pieza se moverá automáticamente
    - El turno pasará al otro jugador
+   - NOTA: El número de movimientos que puedes deshacer depende de tu configuración 
+     inicial. Puedes permitir desde 0 (sin posibilidad de deshacer) hasta 10 movimientos.
 
 DESELECCIONAR:
    - Haz clic en otra pieza tuya

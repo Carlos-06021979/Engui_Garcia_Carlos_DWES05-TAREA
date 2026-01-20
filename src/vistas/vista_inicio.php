@@ -267,6 +267,24 @@ function mostrarFormularioConfig($partidasGuardadas = [])
           <div class="config-option checkbox">
             <label><input type="checkbox" name="mostrar_capturas" checked> Mostrar piezas capturadas</label>
           </div>
+          <!-- Opción para configurar movimientos a deshacer -->
+          <div class="config-option">
+            <label>Movimientos permitidos a deshacer:</label>
+            <select name="max_movimientos_deshacer" class="select-tiempo">
+              <option value="0">Ninguno (sin posibilidad de deshacer)</option>
+              <option value="1">1 movimiento</option>
+              <option value="2">2 movimientos</option>
+              <option value="3">3 movimientos</option>
+              <option value="4">4 movimientos</option>
+              <option value="5" selected>5 movimientos</option>
+              <option value="6">6 movimientos</option>
+              <option value="7">7 movimientos</option>
+              <option value="8">8 movimientos</option>
+              <option value="9">9 movimientos</option>
+              <option value="10">10 movimientos (máximo)</option>
+            </select>
+            <small class="texto-ayuda-incremento">Limita cuántos movimientos puedes deshacer en la partida</small>
+          </div>
 
         </div>
 

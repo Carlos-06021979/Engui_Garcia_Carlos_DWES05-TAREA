@@ -1,11 +1,9 @@
 <!-- MODAL DE CONFIGURACIÓN (para personalizar opciones visuales de la partida -->
 <div id="modalConfiguracion" class="modal">
   <div class="modal-content">
-    <!-- Encabezado del modal con título y botón cerrar -->
+    <!-- Encabezado del modal con título -->
     <div class="modal-header">
-      <h2>Configuración</h2>
-      <!-- Botón X para cerrar el modal (manejado por JavaScript) -->
-      <span class="close-modal">&times;</span>
+      <h2>⚙️ Configuración</h2>
     </div>
     <!-- Formulario para cambiar las configuraciones -->
     <form method="post" class="modal-form">
@@ -33,6 +31,24 @@
             <input type="checkbox" name="mostrar_capturas" <?php echo $_SESSION['config']['mostrar_capturas'] ? 'checked' : ''; ?>>
             Panel de piezas capturadas
           </label>
+        </div>
+
+        <!-- Opción para configurar movimientos a deshacer -->
+        <div class="config-option">
+          <label>Movimientos permitidos a deshacer:</label>
+          <select name="max_movimientos_deshacer" class="select-config">
+            <option value="0" <?php echo (isset($_SESSION['config']['max_movimientos_deshacer']) && $_SESSION['config']['max_movimientos_deshacer'] == 0) ? 'selected' : ''; ?>>Ninguno (sin posibilidad de deshacer)</option>
+            <option value="1" <?php echo (isset($_SESSION['config']['max_movimientos_deshacer']) && $_SESSION['config']['max_movimientos_deshacer'] == 1) ? 'selected' : ''; ?>>1 movimiento</option>
+            <option value="2" <?php echo (isset($_SESSION['config']['max_movimientos_deshacer']) && $_SESSION['config']['max_movimientos_deshacer'] == 2) ? 'selected' : ''; ?>>2 movimientos</option>
+            <option value="3" <?php echo (isset($_SESSION['config']['max_movimientos_deshacer']) && $_SESSION['config']['max_movimientos_deshacer'] == 3) ? 'selected' : ''; ?>>3 movimientos</option>
+            <option value="4" <?php echo (isset($_SESSION['config']['max_movimientos_deshacer']) && $_SESSION['config']['max_movimientos_deshacer'] == 4) ? 'selected' : ''; ?>>4 movimientos</option>
+            <option value="5" <?php echo (isset($_SESSION['config']['max_movimientos_deshacer']) && $_SESSION['config']['max_movimientos_deshacer'] == 5) ? 'selected' : ''; ?>>5 movimientos</option>
+            <option value="6" <?php echo (isset($_SESSION['config']['max_movimientos_deshacer']) && $_SESSION['config']['max_movimientos_deshacer'] == 6) ? 'selected' : ''; ?>>6 movimientos</option>
+            <option value="7" <?php echo (isset($_SESSION['config']['max_movimientos_deshacer']) && $_SESSION['config']['max_movimientos_deshacer'] == 7) ? 'selected' : ''; ?>>7 movimientos</option>
+            <option value="8" <?php echo (isset($_SESSION['config']['max_movimientos_deshacer']) && $_SESSION['config']['max_movimientos_deshacer'] == 8) ? 'selected' : ''; ?>>8 movimientos</option>
+            <option value="9" <?php echo (isset($_SESSION['config']['max_movimientos_deshacer']) && $_SESSION['config']['max_movimientos_deshacer'] == 9) ? 'selected' : ''; ?>>9 movimientos</option>
+            <option value="10" <?php echo (isset($_SESSION['config']['max_movimientos_deshacer']) && $_SESSION['config']['max_movimientos_deshacer'] == 10) ? 'selected' : ''; ?>>10 movimientos (máximo)</option>
+          </select>
         </div>
       </div>
 
