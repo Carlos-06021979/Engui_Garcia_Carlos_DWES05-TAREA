@@ -696,13 +696,15 @@ function abrirModalConfirmacion(tipo, opciones = {}) {
     mensaje = `¿Deseas eliminar la partida "<strong>${opciones.nombre}</strong>"?`;
     bottonClass = "btn-eliminar";
     const desdeInicio = opciones.desdeInicio ? true : false;
-    
+
     // Usamos AJAX para ambos casos (pantalla inicial y durante el juego)
-    const funcionAjax = desdeInicio ? "eliminarPartidaAjaxInicial" : "eliminarPartidaAjax";
+    const funcionAjax = desdeInicio
+      ? "eliminarPartidaAjaxInicial"
+      : "eliminarPartidaAjax";
     accionHTML = `
       <button type="button" class="btn-confirmar ${bottonClass}" onclick="${funcionAjax}('${opciones.archivo}')">${icono} Eliminar</button>
     `;
-    
+
     modeloId = "modalConfirmarEliminar";
   } else if (tipo === "eliminar_todas") {
     // Modal para confirmar eliminación masiva
@@ -710,7 +712,9 @@ function abrirModalConfirmacion(tipo, opciones = {}) {
     icono = "🗑️";
     mensaje = "¿Deseas eliminar todas las partidas guardadas?";
     bottonClass = "btn-eliminar";
-    const funcionAjax = opciones.desdeInicio ? "eliminarTodasPartidasAjaxInicial" : "eliminarTodasPartidasAjax";
+    const funcionAjax = opciones.desdeInicio
+      ? "eliminarTodasPartidasAjaxInicial"
+      : "eliminarTodasPartidasAjax";
     accionHTML = `
       <button type="button" class="btn-confirmar ${bottonClass}" onclick="${funcionAjax}()">${icono} Eliminar todas</button>
     `;
@@ -810,13 +814,15 @@ function actualizarModalListado(modalId, data, opciones = {}) {
   const modal = document.getElementById(modalId);
   if (!modal) return;
 
-  const modalContent = modal.querySelector('.modal-content');
+  const modalContent = modal.querySelector(".modal-content");
   if (!modalContent) return;
 
-  let listaPartidas = modalContent.querySelector('.lista-partidas');
-  let mensajeVacio = modalContent.querySelector('.mensaje-vacio');
+  let listaPartidas = modalContent.querySelector(".lista-partidas");
+  let mensajeVacio = modalContent.querySelector(".mensaje-vacio");
 
-  const botonEliminarTodasId = inicial ? 'btnEliminarTodasInicial' : 'btnEliminarTodas';
+  const botonEliminarTodasId = inicial
+    ? "btnEliminarTodasInicial"
+    : "btnEliminarTodas";
   setEstadoBotonEliminarTodas(botonEliminarTodasId, data.partidas.length > 0);
 
   if (data.partidas.length === 0) {
@@ -825,12 +831,12 @@ function actualizarModalListado(modalId, data, opciones = {}) {
     }
 
     if (!mensajeVacio) {
-      const mensajeDiv = document.createElement('p');
-      mensajeDiv.className = 'mensaje-vacio';
+      const mensajeDiv = document.createElement("p");
+      mensajeDiv.className = "mensaje-vacio";
       mensajeDiv.textContent = data.mensaje;
 
-      const h2 = modalContent.querySelector('h2');
-      h2.insertAdjacentElement('afterend', mensajeDiv);
+      const h2 = modalContent.querySelector("h2");
+      h2.insertAdjacentElement("afterend", mensajeDiv);
     } else {
       mensajeVacio.textContent = data.mensaje;
     }
@@ -838,13 +844,14 @@ function actualizarModalListado(modalId, data, opciones = {}) {
     return;
   }
 
-  const html = data.partidas.map(partida => {
-    const nombre = escapeHtml(partida.nombre);
-    const fecha = escapeHtml(partida.fecha);
-    const archivo = escapeHtml(partida.archivo);
+  const html = data.partidas
+    .map((partida) => {
+      const nombre = escapeHtml(partida.nombre);
+      const fecha = escapeHtml(partida.fecha);
+      const archivo = escapeHtml(partida.archivo);
 
-    if (inicial) {
-      return `
+      if (inicial) {
+        return `
         <div class="item-partida">
           <div class="info-partida">
             <div class="nombre-partida">${nombre}</div>
@@ -859,9 +866,9 @@ function actualizarModalListado(modalId, data, opciones = {}) {
           </div>
         </div>
       `;
-    }
+      }
 
-    return `
+      return `
       <div class="item-partida">
         <div class="info-partida">
           <div class="nombre-partida">${nombre}</div>
@@ -876,13 +883,14 @@ function actualizarModalListado(modalId, data, opciones = {}) {
         </div>
       </div>
     `;
-  }).join('');
+    })
+    .join("");
 
   if (!listaPartidas) {
-    listaPartidas = document.createElement('div');
-    listaPartidas.className = 'lista-partidas';
-    const h2 = modalContent.querySelector('h2');
-    h2.insertAdjacentElement('afterend', listaPartidas);
+    listaPartidas = document.createElement("div");
+    listaPartidas.className = "lista-partidas";
+    const h2 = modalContent.querySelector("h2");
+    h2.insertAdjacentElement("afterend", listaPartidas);
   }
 
   listaPartidas.innerHTML = html;
@@ -894,7 +902,7 @@ function actualizarModalListado(modalId, data, opciones = {}) {
 
 // Función auxiliar para escapar HTML
 function escapeHtml(text) {
-  const div = document.createElement('div');
+  const div = document.createElement("div");
   div.textContent = text;
   return div.innerHTML;
 }
@@ -907,15 +915,15 @@ function eliminarPartidaAjax(archivo) {
     body: new URLSearchParams({
       eliminar_partida: "1",
       archivo_partida: archivo,
-      ajax_eliminar: "1"
-    })
+      ajax_eliminar: "1",
+    }),
   })
-    .then(r => r.json())
-    .then(data => {
-      cerrarModal('modalConfirmarEliminar');
-      actualizarModalListado('modalCargar', data, { inicial: false });
+    .then((r) => r.json())
+    .then((data) => {
+      cerrarModal("modalConfirmarEliminar");
+      actualizarModalListado("modalCargar", data, { inicial: false });
     })
-    .catch(e => console.error("Error al eliminar partida:", e));
+    .catch((e) => console.error("Error al eliminar partida:", e));
 }
 
 // Función para eliminar una partida desde la pantalla inicial mediante AJAX
@@ -926,15 +934,15 @@ function eliminarPartidaAjaxInicial(archivo) {
     body: new URLSearchParams({
       eliminar_partida_inicial: "1",
       archivo_partida: archivo,
-      ajax_eliminar: "1"
-    })
+      ajax_eliminar: "1",
+    }),
   })
-    .then(r => r.json())
-    .then(data => {
-      cerrarModal('modalConfirmarEliminar');
-      actualizarModalListado('modalCargarInicial', data, { inicial: true });
+    .then((r) => r.json())
+    .then((data) => {
+      cerrarModal("modalConfirmarEliminar");
+      actualizarModalListado("modalCargarInicial", data, { inicial: true });
     })
-    .catch(e => console.error("Error al eliminar partida:", e));
+    .catch((e) => console.error("Error al eliminar partida:", e));
 }
 
 // Función para eliminar todas las partidas (modal en partida)
@@ -944,15 +952,15 @@ function eliminarTodasPartidasAjax() {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
       eliminar_todas: "1",
-      ajax_eliminar: "1"
-    })
+      ajax_eliminar: "1",
+    }),
   })
-    .then(r => r.json())
-    .then(data => {
-      cerrarModal('modalConfirmarEliminarTodas');
-      actualizarModalListado('modalCargar', data, { inicial: false });
+    .then((r) => r.json())
+    .then((data) => {
+      cerrarModal("modalConfirmarEliminarTodas");
+      actualizarModalListado("modalCargar", data, { inicial: false });
     })
-    .catch(e => console.error("Error al eliminar partidas:", e));
+    .catch((e) => console.error("Error al eliminar partidas:", e));
 }
 
 // Función para eliminar todas las partidas desde la pantalla inicial
@@ -962,15 +970,15 @@ function eliminarTodasPartidasAjaxInicial() {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
       eliminar_todas_inicial: "1",
-      ajax_eliminar: "1"
-    })
+      ajax_eliminar: "1",
+    }),
   })
-    .then(r => r.json())
-    .then(data => {
-      cerrarModal('modalConfirmarEliminarTodas');
-      actualizarModalListado('modalCargarInicial', data, { inicial: true });
+    .then((r) => r.json())
+    .then((data) => {
+      cerrarModal("modalConfirmarEliminarTodas");
+      actualizarModalListado("modalCargarInicial", data, { inicial: true });
     })
-    .catch(e => console.error("Error al eliminar partidas:", e));
+    .catch((e) => console.error("Error al eliminar partidas:", e));
 }
 
 // Función para abrir el modal de cargar partida desde la pantalla inicial

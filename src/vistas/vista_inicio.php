@@ -317,7 +317,7 @@ function mostrarModalCargarInicial($partidas)
                   <button type="submit" name="cargar_partida_inicial" class="btn-cargar-item">📂 Cargar</button>
                 </form>
                 <!-- Botón para eliminar la partida -->
-              <button type="button" class="btn-eliminar-item" onclick="abrirModalConfirmarEliminar('<?php echo htmlspecialchars(addslashes($partida['nombre'])); ?>', '<?php echo htmlspecialchars($partida['archivo']); ?>', true)">🗑️</button>
+                <button type="button" class="btn-eliminar-item" onclick="abrirModalConfirmarEliminar('<?php echo htmlspecialchars(addslashes($partida['nombre'])); ?>', '<?php echo htmlspecialchars($partida['archivo']); ?>', true)">🗑️</button>
               </div>
             </div>
           <?php endforeach; ?>
